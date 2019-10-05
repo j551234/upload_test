@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.io.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,10 +16,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class uploadController {
     //Save the uploaded file to this folder
-    private static String UPLOADED_FOLDER = "./photo/";
+    private static String UPLOADED_FOLDER = "C:\\Users\\USER\\Desktop\\workspace\\upload_test\\src\\main\\resources\\file\\";
 
     @GetMapping("/")
     public String index() {
+    	
         return "upload";
     }
 
@@ -31,9 +33,16 @@ public class uploadController {
         }
 
         try {
+        	File dirFile = new File(UPLOADED_FOLDER);
+        	if(dirFile.exists() == false) {
+        		dirFile.mkdir();
+        	}
             // Get the file and save it somewhere
             byte[] bytes = file.getBytes();
+            dirFile.mkdir();
+           
             Path path = Paths.get(UPLOADED_FOLDER+ file.getOriginalFilename());
+            
             Files.write(path, bytes);
 
             redirectAttributes.addFlashAttribute("message",
